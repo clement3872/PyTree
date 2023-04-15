@@ -27,7 +27,7 @@ class SubWindow(object):
 
         self.entry = tk.Entry(self.window)
 
-        self.labeltk.Label(self.window, text="No action defined")
+        self.label = tk.Label(self.window, text="No action defined")
         self.b_apply = tk.Button(self.window, text="OK", command=self.window.destroy)
 
         if action == "add":
@@ -40,7 +40,7 @@ class SubWindow(object):
             self.set_save_interface()
         
 
-        label.pack()
+        self.label.pack()
         self.entry.pack()
         self.b_apply.pack()
 
@@ -48,37 +48,32 @@ class SubWindow(object):
 
 
     def set_add_interface(self):
-        self.labeltk.Label(self.window, text="Value to insert:")
-        self.b_apply = tk.Button(self.window, text="Add node", command=self.add_node)
+        self.label.config(text="Value to insert:")
+        self.b_apply.config(text="Add node", command=self.add_node)
 
     
     def set_delete_interface(self):
-        self.labeltk.Label(self.window, text="Value to delete:")
-        self.entry = tk.Entry(self.window)
-        self.b_apply = tk.Button(self.window, text="delete node", command=self.delete_node)
+        self.label.config(text="Value to delete:")
+        self.b_apply.config(text="delete node", command=self.delete_node)
 
 
     def set_open_interface(self):
-        self.labeltk.Label(self.window, text="Path to the file (default is save.txt):")
-        self.entry = tk.Entry(self.window)
-        self.b_apply = tk.Button(self.window, text="Open saved tree", command=self.open_tree)
+        self.label.config(text="Path to the file (default is save.txt):")
+        self.b_apply.config(text="Open saved tree", command=self.open_tree)
 
 
     def set_save_interface(self):
-        self.labeltk.Label(self.window, text="Path to the file (default is save.txt):")
-        self.entry = tk.Entry(self.window)
-        self.b_apply = tk.Button(self.window, text="Save tree", command=self.save_tree)
+        self.label.config(text="Path to the file (default is save.txt):")
+        self.b_apply.config(text="Save tree", command=self.save_tree)
 
     
     def add_node(self):
         self.tree.insert(self.entry.get())
-
         self.main_window.draw_tree(self.tree)
 
     
     def delete_node(self):
         self.tree.delete(self.entry.get())
-
         self.main_window.draw_tree(self.tree)
     
     def open_tree(self):
@@ -101,7 +96,7 @@ class SubWindow(object):
         if self.tree.root != None:
             path = self.entry.get()
             if path == "": path = "save.txt"
-            l_values = [node.value for node in self.tree.width_first_global(self.tree.root)]
+            l_values = [node.value for node in self.tree.width_first(self.tree.root)]
             with open(path, 'w') as f:
                 f.write(str(l_values))
             self.main_window.draw_tree(self.tree)

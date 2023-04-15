@@ -21,7 +21,7 @@ class BinaryTree(object):
         self.root = node
     
     def size(self):
-        return len(self.width_first_global(self, self.root))
+        return len(self.width_first(self, self.root))
     
     def get_height(self):
         
@@ -68,7 +68,7 @@ class BinaryTree(object):
         
         # if we found the node that we wanted to delete
         if node is not None:
-            deepest_node = self.width_first_global(self.root)[-1]
+            deepest_node = self.width_first(self.root)[-1]
             
             # replace the node with the deepest where it's needed
             if deepest_node == self.root: self.root = None
@@ -127,7 +127,7 @@ class BinaryTree(object):
         return l
     
     # parcours en largeur (width path)
-    def width_first_global(self, node) -> list:
+    def width_first(self, node) -> list:
         if self.root is None: return 
         
         l_nodes = []
@@ -148,7 +148,7 @@ class BinaryTree(object):
         if search not in ["depth first", "width first"]: search = "width first"
         
         if search == "width first":
-            l_nodes = self.width_first_global(self.root)
+            l_nodes = self.width_first(self.root)
             for node in l_nodes: print(node.value)
         elif search == "depth first":
             l_nodes = self.depth_first_global(self.root)
@@ -172,14 +172,14 @@ class BinaryTree(object):
 
     def get_coded_tree(self):
         l_coded_values = []
-        for node in self.width_first_global(self.root):
+        for node in self.width_first(self.root):
             l_coded_values.append((self.get_coded_value(node), node.value))
         
         return l_coded_values
 
 
     def size(self) -> int:
-        l = self.width_first_global(self.root)
+        l = self.width_first(self.root)
         return len(l) 
 
     def decomposition(self) -> None:

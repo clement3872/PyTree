@@ -27,7 +27,7 @@ class MainWindow(object):
         b_remove_node = tk.Button(self.frame1, text="Remove node", command=self.remove_node)
         b_open_tree = tk.Button(self.frame1, text="Open tree", command=self.open_tree)
         b_save_tree = tk.Button(self.frame1, text="Save tree", command=self.save_tree)
-        b_encode = tk.Button(self.frame1, text="Encode tree (not implemented)", command=self.open_tree)
+        b_encode = tk.Button(self.frame1, text="Encode tree (not implemented)", command=None)
 
         self.canvas = tk.Canvas(self.frame2)
 
