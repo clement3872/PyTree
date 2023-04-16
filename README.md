@@ -22,7 +22,7 @@ Contains:
 
 First, create a tree using : BinaryTree() or BinaryTree("first value/Node()")
 
-Usefull functions (considering tree = BinaryTree()):
+Usefull functions (considering tree = binTree.BinaryTree()):
 - tree.insert(any:value) -> None
 - tree.remove(any:value) -> None
 - tree.delete(any:value) -> None
