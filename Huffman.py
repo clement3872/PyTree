@@ -80,3 +80,4 @@ class HuffmanTree(binTree.BinaryTree):
 
 if __name__ == '__main__':
     t = HuffmanTree("test")
+    t.display()
