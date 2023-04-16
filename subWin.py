@@ -73,7 +73,8 @@ class SubWindow(object):
 
     
     def delete_node(self):
-        self.tree.delete(self.entry.get())
+        if not self.tree.delete(self.entry.get()):
+            ErrorWindow("Node does not exist")
         self.main_window.draw_tree(self.tree)
     
     def open_tree(self):

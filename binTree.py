@@ -52,10 +52,12 @@ class BinaryTree(object):
                 else:
                     l_nodes.extend([node.left, node.right])
 
-    def delete(self, value) -> Node:
+    def delete(self, value) -> bool:
         # find the node a value in the tree
         # replace that node with the deepest one in the tree
 
+        if self.root is None: return False
+        
         node = None
         queue = [self.root]
         while queue:
@@ -96,7 +98,9 @@ class BinaryTree(object):
                 if node.left != None: node.left.parent = deepest_node
                 if node.right != None: node.right.parent = deepest_node
 
-
+        return True
+    
+    
     def delete_all(self):
         for node in self.depth_first_global(self.root):
             del node

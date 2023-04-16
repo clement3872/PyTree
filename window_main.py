@@ -103,16 +103,17 @@ class MainWindow(object):
                                         y-circle_radius,
                                         width=line_width)
 
+
+                old_rel_x = rel_x
+
+                walk_tree_rec(node.left, current_height+1, old_rel_x, left_nominator, canvas, canvas_size, circle_radius)
+                walk_tree_rec(node.right, current_height+1, old_rel_x, right_nominator, canvas, canvas_size, circle_radius)
                 canvas.create_oval(x-circle_radius, 
                                     y-circle_radius,
                                     x+circle_radius, 
                                     y+circle_radius, fill="white")
 
                 canvas.create_text(x,y, text=str(node.value))
-                old_rel_x = rel_x
-
-                walk_tree_rec(node.left, current_height+1, old_rel_x, left_nominator, canvas, canvas_size, circle_radius)
-                walk_tree_rec(node.right, current_height+1, old_rel_x, right_nominator, canvas, canvas_size, circle_radius)
         
         walk_tree_rec(node=tree.root,
                       current_height=0,
@@ -132,5 +133,9 @@ class MainWindow(object):
 
 
 
+import Huffman
+
 win = MainWindow()
+win.tree =Huffman.HuffmanTree("mange tes pates")
+win.draw_tree(win.tree)
 win.display()
