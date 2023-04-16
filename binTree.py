@@ -102,7 +102,7 @@ class BinaryTree(object):
     
     
     def delete_all(self):
-        for node in self.depth_first_global(self.root):
+        for node in self.depth_first(self.root):
             del node
         self.root = None
 
@@ -119,14 +119,14 @@ class BinaryTree(object):
         depth_first_rec(self.root, old_value, new_value)
 
 
-    def depth_first_global(self, node) -> list:
+    def depth_first(self, node) -> list:
         # parcours en profondeur (depth first)
         # Cette fonction est récursive
         l = []
         if node is None: return l
         l.append(node)
-        l.extend(self.depth_first_global(node.left))
-        l.extend(self.depth_first_global(node.right))
+        l.extend(self.depth_first(node.left))
+        l.extend(self.depth_first(node.right))
 
         return l
     
@@ -153,14 +153,16 @@ class BinaryTree(object):
         
         if search == "width first":
             l_nodes = self.width_first(self.root)
-            for node in l_nodes: print(node.value)
         elif search == "depth first":
-            l_nodes = self.depth_first_global(self.root)
+            l_nodes = self.depth_first(self.root)
+        
+        if l_nodes != None:
             for node in l_nodes: print(node.value)
         print()
 
-    
+
     def get_coded_value(self, ref_node) -> str:
+        # it's useful in Huffman
         # cherche dans l'arbre et retourne la valeur codee pour le noeud
         def depth_first_rec(node, ref_node, path="") -> str:
             if node==None: return ""
@@ -172,7 +174,6 @@ class BinaryTree(object):
             return left if left!="" else right
         
         return depth_first_rec(node=self.root, ref_node=ref_node)
-    
 
     def get_coded_tree(self):
         l_coded_values = []
@@ -180,7 +181,7 @@ class BinaryTree(object):
             l_coded_values.append((self.get_coded_value(node), node.value))
         
         return l_coded_values
-
+    
 
     def size(self) -> int:
         l = self.width_first(self.root)

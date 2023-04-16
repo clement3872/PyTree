@@ -136,6 +136,9 @@ class MainWindow(object):
 import Huffman
 
 win = MainWindow()
-win.tree =Huffman.HuffmanTree("mange tes pates")
+
+win.tree = Huffman.HuffmanTree()
+win.tree.encode("test")
+
 win.draw_tree(win.tree)
 win.display()
