@@ -165,8 +165,8 @@ import Huffman
 
 win = MainWindow()
 
-win.tree = Huffman.HuffmanTree()
-win.tree.encode("test")
+# win.tree = Huffman.HuffmanTree()
+# win.tree.encode("test")
 
-win.draw_tree(win.tree)
+# win.draw_tree(win.tree)
 win.display()

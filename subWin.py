@@ -1,5 +1,5 @@
 import tkinter as tk
-import os
+import os, pyperclip
 import binTree, Huffman
 
 
@@ -24,32 +24,48 @@ class ErrorWindow(object):
 
         self.window.mainloop()
 
-def giveCodeWindow(message="", key=""):
-    # why this doesn't work ???
-    window = tk.Tk()
-    
-    Spacer(window)
 
-    strv1 = tk.StringVar(); strv1.set(str(message))
-    strv2 = tk.StringVar(); strv2.set(str(key))
+class giveCodeWindow():
+    def __init__(self, message="", key=""):
+        self.message = str(message)
+        self.key = str(key)
+        
+        window = tk.Tk()
+        window.geometry("250x140")
 
-    t1 = tk.Entry(window, textvariable=strv1)
-    t2 = tk.Entry(window, textvariable=strv2)
 
-    t1.pack()
-    t2.pack()
+
+        t1 = tk.Label(window, text="Message: "+str(message))
+        t2 = tk.Label(window, text="Key: "+str(key))
+        b_copy1 = tk.Button(window, text="Copy message", command=self.copy_message)
+        b_copy2 = tk.Button(window, text="Copy key", command=self.copy_key)
+
+        if self.message.strip() != "":
+            Spacer(window)
+            t1.pack()
+            b_copy1.pack()
+        if self.key.strip() != "":
+            Spacer(window)
+            t2.pack()
+            b_copy2.pack()
+            window.geometry("250x220")
+        
+        b = tk.Button(window, text="OK", command=window.destroy)
+        b.pack(pady=20)
+        
+        window.mainloop()
     
-    b = tk.Button(window, text="OK")
-    b.pack(pady=20)
+    def copy_message(self):
+        pyperclip.copy(str(self.message))
     
-    window.mainloop()
+    def copy_key(self):
+        pyperclip.copy(str(self.key))
 
 
 
 class SubWindow(object):
     
     def __init__(self, action,tree, main_window):
-        self.tree = tree
         self.main_window = main_window
 
         self.window = tk.Tk()
@@ -116,28 +132,48 @@ class SubWindow(object):
         self.window.geometry("250x130")
     
     def add_node(self):
-        self.tree.insert(self.entry.get())
-        self.main_window.draw_tree(self.tree)
+        if type(self.main_window.tree) == type(Huffman.HuffmanTree()):
+            root = self.main_window.tree.root
+            self.main_window.tree = binTree.BinaryTree()
+            self.main_window.tree.root = root
+        self.main_window.tree.insert(self.entry.get())
+        self.main_window.draw_tree(self.main_window.tree)
 
     def delete_node(self):
-        if not self.tree.delete(self.entry.get()):
+        if not self.main_window.tree.delete(self.entry.get()):
             ErrorWindow("Node does not exist")
-        self.main_window.draw_tree(self.tree)
+        self.main_window.draw_tree(self.main_window.tree)
 
     def encode_tree(self):
-        self.tree.delete_all()
         message = self.entry.get()
-        self.tree = Huffman.HuffmanTree()
-        message,key = self.tree.encode(message)
+        if message.strip() != "":
+            self.main_window.tree.delete_all()
+            self.main_window.tree = Huffman.HuffmanTree()
+            message,key = self.main_window.tree.encode(message)
 
-        self.main_window.draw_tree(self.tree)
+            self.main_window.draw_tree(self.main_window.tree)
 
-        giveCodeWindow(message, key)
+            giveCodeWindow(message, key)
 
 
     
     def decode_tree(self):
-        pass
+        message = self.entry.get()
+        key = self.entry2.get()
+        
+        if message.strip() != "":
+            # Some security
+            try:
+                key = eval(key)
+            except:
+                ErrorWindow("Invalid key")
+            
+            self.main_window.tree.delete_all()
+            self.main_window.tree = Huffman.HuffmanTree()
+            message = self.main_window.tree.decode(message,key)
+            self.main_window.draw_tree(self.main_window.tree)
+            giveCodeWindow(message)
+        return message
 
     def open_tree(self):
         path = self.entry.get()
@@ -149,34 +185,34 @@ class SubWindow(object):
             tree_type = l_lines[0]
             l_nodes = eval(l_lines[1]) # of the key it's for Huffman
             
-            self.tree.delete_all()
+            self.main_window.tree.delete_all()
             # insert the nodes, checking tree type first
             if tree_type == "binTree\n":
-                self.tree = binTree.BinaryTree()
-                for el in l:
-                    self.tree.insert(el)
+                self.main_window.tree = binTree.BinaryTree()
+                for el in l_nodes:
+                    self.main_window.tree.insert(el)
             elif tree_type == "Huffman\n":
-                self.tree = Huffman.HuffmanTree()
-                self.tree.display()
-                self.tree.decode("",l_nodes)
+                self.main_window.tree = Huffman.HuffmanTree()
+                self.main_window.tree.display()
+                self.main_window.tree.decode("",l_nodes)
 
-            self.main_window.draw_tree(self.tree)
+            self.main_window.draw_tree(self.main_window.tree)
             self.window.destroy()
         else:
             ErrorWindow("Tree needs to be saved or invalid path, path:\n%s" % path)
         
     
     def save_tree(self):
-        if self.tree.root != None:
+        if self.main_window.tree.root != None:
             path = self.entry.get()
             if path == "": path = "save.txt"
-            l_values = [node.value for node in self.tree.width_first(self.tree.root)]
+            l_values = [node.value for node in self.main_window.tree.width_first(self.main_window.tree.root)]
             with open(path, 'w') as f:
-                if type(self.tree) == type(Huffman.HuffmanTree()):
-                    f.write("Huffman")
-                    f.write(str(self.tree.key))
+                if type(self.main_window.tree) == type(Huffman.HuffmanTree()):
+                    f.write("Huffman\n")
+                    f.write(str(self.main_window.tree.key))
                 else:
-                    f.write("binTree")
+                    f.write("binTree\n")
                     f.write(str(l_values))
         
             self.window.destroy()
