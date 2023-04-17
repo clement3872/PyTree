@@ -10,35 +10,55 @@ class Pointer(object):
         self.value = None
 
 
+class Spacer(tk.Label):
+    def __init__(self, frame):
+        super().__init__(frame, text=" ")
+        self.pack()
+
+
 class MainWindow(object):
 
     def __init__(self):
         self.window = tk.Tk()
 
         # Frame
-        self.frame1 = tk.Frame(self.window) # for buttons
+        self.frame1 = tk.Frame(self.window) # for buttons/labels
         self.frame2 = tk.Frame(self.window) # for the canvas
 
         self.l_pointers = []
         self.tree = binTree.BinaryTree()
+
+        # Labels
+        t_title1 = tk.Label(self.frame1, text="Binary tree")
+        t_title2 = tk.Label(self.frame1, text="Huffman (overrides current tree)")
+        t_title3 = tk.Label(self.frame1, text="Other functionalities")
 
         # Buttons
         b_add_node = tk.Button(self.frame1, text="Add node", command=self.add_node)
         b_remove_node = tk.Button(self.frame1, text="Remove node", command=self.remove_node)
         b_open_tree = tk.Button(self.frame1, text="Open tree", command=self.open_tree)
         b_save_tree = tk.Button(self.frame1, text="Save tree", command=self.save_tree)
-        b_encode = tk.Button(self.frame1, text="Encode tree (not implemented)", command=None)
+        b_encode = tk.Button(self.frame1, text="Encode message", command=self.encode)
+        b_decode = tk.Button(self.frame1, text="Decode message", command=self.decode)
+
 
         self.canvas = tk.Canvas(self.frame2)
 
         # buttons etc on the window
         self.frame1.grid(row=0, column=0)
         self.frame2.grid(row=0, column=1)
+        t_title1.pack(pady=5,padx=10)
         b_add_node.pack()
         b_remove_node.pack()
+        Spacer(self.frame1)
+        t_title2.pack(pady=5,padx=10)
+        b_encode.pack()
+        b_decode.pack()
+        Spacer(self.frame1)
+        t_title3.pack(pady=5,padx=10)
         b_open_tree.pack()
         b_save_tree.pack()
-        b_encode.pack()
+        Spacer(self.frame1)
 
         self.canvas.pack()
 
@@ -49,6 +69,7 @@ class MainWindow(object):
         # self.tree.delete(4)
         
         self.draw_tree(self.tree) 
+    
     
     def display(self):
         self.window.mainloop()
@@ -64,6 +85,13 @@ class MainWindow(object):
         
     def save_tree(self):
         sub_win = subWin.SubWindow("save", self.tree, self)
+    
+    def encode(self):
+        sub_win = subWin.SubWindow("encode", self.tree, self)
+
+    def decode(self):
+        sub_win = subWin.SubWindow("decode", self.tree, self)
+
 
     def draw_tree(self, tree):
 
