@@ -187,8 +187,8 @@ class BinaryTree(object):
         l = self.width_first(self.root)
         return len(l) 
 
-    def decomposition(self) -> None:
-        pass
+    def decomposition(self, node) -> None:
+        return self.width_first(node)
 
     def to_string(self) -> str:
         pass

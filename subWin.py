@@ -3,7 +3,6 @@ import os, pyperclip
 import binTree, Huffman
 
 
-
 class Spacer(tk.Label):
     def __init__(self, frame):
         super().__init__(frame, text=" ")
@@ -56,10 +55,19 @@ class giveCodeWindow():
         window.mainloop()
     
     def copy_message(self):
-        pyperclip.copy(str(self.message))
+        try:
+            pyperclip.copy(str(self.message))
+        except:
+            pyperclip.set_clipboard("klipper")
+            pyperclip.copy(str(self.message))
     
     def copy_key(self):
-        pyperclip.copy(str(self.key))
+        try:
+            pyperclip.copy(str(self.key))
+        except:
+            pyperclip.set_clipboard("klipper")
+            pyperclip.copy(str(self.key))
+    
 
 
 

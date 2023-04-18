@@ -1,7 +1,6 @@
 import tkinter as tk
-import binTree
 from numpy import log2
-import subWin
+import binTree, subWin, Huffman
 
 
 class Pointer(object):
@@ -160,8 +159,6 @@ class MainWindow(object):
 # tree.display()
 
 
-
-import Huffman
 
 win = MainWindow()
 
