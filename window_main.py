@@ -37,6 +37,7 @@ class MainWindow(object):
         b_remove_node = tk.Button(self.frame1, text="Remove node", command=self.remove_node)
         b_open_tree = tk.Button(self.frame1, text="Open tree", command=self.open_tree)
         b_save_tree = tk.Button(self.frame1, text="Save tree", command=self.save_tree)
+        b_delete_all = tk.Button(self.frame1, text="Delete all nodes", command=self.delete_all_tree)
         b_encode = tk.Button(self.frame1, text="Encode message", command=self.encode)
         b_decode = tk.Button(self.frame1, text="Decode message", command=self.decode)
 
@@ -55,6 +56,7 @@ class MainWindow(object):
         b_decode.pack()
         Spacer(self.frame1)
         t_title3.pack(pady=5,padx=10)
+        b_delete_all.pack()
         b_open_tree.pack()
         b_save_tree.pack()
         Spacer(self.frame1)
@@ -90,6 +92,10 @@ class MainWindow(object):
 
     def decode(self):
         sub_win = subWin.SubWindow("decode", self.tree, self)
+    
+    def delete_all_tree(self):
+        self.tree.delete_all()
+        self.draw_tree(self.tree)
 
 
     def draw_tree(self, tree):

@@ -24,14 +24,13 @@ class ErrorWindow(object):
         self.window.mainloop()
 
 
-class giveCodeWindow():
+class GiveCodeWindow():
     def __init__(self, message="", key=""):
         self.message = str(message)
         self.key = str(key)
         
         window = tk.Tk()
         window.geometry("250x140")
-
 
 
         t1 = tk.Label(window, text="Message: "+str(message))
@@ -77,7 +76,9 @@ class SubWindow(object):
         self.main_window = main_window
 
         self.window = tk.Tk()
+        self.window.title("Sub Window")
         self.window.geometry("250x100")
+        
 
 
         self.entry = tk.Entry(self.window, text="")
@@ -112,33 +113,39 @@ class SubWindow(object):
 
 
     def set_add_interface(self):
+        self.window.title("Adding a node")
         self.label.config(text="Value to insert:")
         self.b_apply.config(text="Add node", command=self.add_node)
 
     
     def set_delete_interface(self):
+        self.window.title("Removing a node")
         self.label.config(text="Value to delete:")
         self.b_apply.config(text="delete node", command=self.delete_node)
 
 
     def set_open_interface(self):
+        self.window.title("Open a file")
         self.label.config(text="Path to the file (default is save.txt):")
         self.b_apply.config(text="Open saved tree", command=self.open_tree)
 
     def set_save_interface(self):
+        self.window.title("Save to a file")
         self.label.config(text="Path to the file (default is save.txt):")
         self.b_apply.config(text="Save tree", command=self.save_tree)
 
     def set_encode_interface(self):
+        self.window.title("Encode a message")
         self.label.config(text="Message to encode:")
         self.b_apply.config(text="Encode", command=self.encode_tree)
 
     def set_decode_interface(self):
+        self.window.title("Decode a message")
         self.label.config(text="Message to decode:")
         self.label2.config(text="key:")
         self.b_apply.config(text="Decode", command=self.decode_tree)
         self.window.geometry("250x130")
-    
+
     def add_node(self):
         if type(self.main_window.tree) == type(Huffman.HuffmanTree()):
             root = self.main_window.tree.root
@@ -161,7 +168,7 @@ class SubWindow(object):
 
             self.main_window.draw_tree(self.main_window.tree)
 
-            giveCodeWindow(message, key)
+            GiveCodeWindow(message, key)
 
 
     
@@ -180,7 +187,7 @@ class SubWindow(object):
             self.main_window.tree = Huffman.HuffmanTree()
             message = self.main_window.tree.decode(message,key)
             self.main_window.draw_tree(self.main_window.tree)
-            giveCodeWindow(message)
+            GiveCodeWindow(message)
         return message
 
     def open_tree(self):
