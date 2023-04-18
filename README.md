@@ -1,6 +1,6 @@
-# PyTree projet
+# PyTree project
 
-It's a little projet from the University, here is what it contains:
+It's a little project from the University, here is what it contains:
  - binTree.py: a mudule to use binary tree
  - Huffman.py: Huffman encore/decoding (needs binTree in the same folder)
  - window_main.py & subWin.py: basic GUI for binary tree (needs binTree and Huffman.py in the same folder)
