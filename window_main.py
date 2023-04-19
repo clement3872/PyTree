@@ -19,6 +19,7 @@ class MainWindow(object):
 
     def __init__(self):
         self.window = tk.Tk()
+        self.window.title("PyTree GUI")
 
         # Frame
         self.frame1 = tk.Frame(self.window) # for buttons/labels
