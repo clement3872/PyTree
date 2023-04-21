@@ -38,13 +38,14 @@ class MainWindow(object):
         t_title3 = tk.Label(self.frame1, text="Other functionalities")
 
         # Buttons
-        b_add_node = tk.Button(self.frame1, text="Add node", command=self.add_node)
-        b_remove_node = tk.Button(self.frame1, text="Remove node", command=self.remove_node)
-        b_open_tree = tk.Button(self.frame1, text="Open tree", command=self.open_tree)
-        b_save_tree = tk.Button(self.frame1, text="Save tree", command=self.save_tree)
+        b_add_node = tk.Button(self.frame1, text="Add a node", command=self.add_node)
+        b_remove_node = tk.Button(self.frame1, text="Remove a node", command=self.remove_node)
+        b_open_tree = tk.Button(self.frame1, text="Open a file", command=self.open_tree)
+        b_save_tree = tk.Button(self.frame1, text="Save as a file", command=self.save_tree)
         b_delete_all = tk.Button(self.frame1, text="Delete all nodes", command=self.delete_all_tree)
         b_encode = tk.Button(self.frame1, text="Encode message", command=self.encode)
         b_decode = tk.Button(self.frame1, text="Decode message", command=self.decode)
+        b_modify = tk.Button(self.frame1, text="Modify a node", command=self.modify_node)
 
         # Sroll bars
         self.scroll_bar1 = tk.Scrollbar(self.frame2, orient="horizontal", command=self.canvas.xview)
@@ -52,18 +53,21 @@ class MainWindow(object):
         self.canvas.config(xscrollcommand=self.scroll_bar1.set, yscrollcommand=self.scroll_bar2.set)
 
         # buttons etc on the window
-        # self.frame1.grid(row=0, column=0)
-        # self.frame2.grid(row=0, column=1)
-        self.frame1.pack(side="left")
-        self.frame2.pack(side="right", expand=True)
+        self.frame1.grid(row=0, column=0)
+        self.frame2.grid(row=0, column=1)
+
         t_title1.pack(pady=5,padx=10)
         b_add_node.pack()
         b_remove_node.pack()
+        b_modify.pack()
+        b_delete_all.pack()
         Spacer(self.frame1)
+
         t_title2.pack(pady=5,padx=10)
         b_encode.pack()
         b_decode.pack()
         Spacer(self.frame1)
+        
         t_title3.pack(pady=5,padx=10)
         b_delete_all.pack()
         b_open_tree.pack()
@@ -88,22 +92,25 @@ class MainWindow(object):
         self.window.mainloop()
 
     def add_node(self):
-        sub_win = subWin.SubWindow("add", self.tree, self)
+        subWin.SubWindow("add", self)
     
     def remove_node(self):
-        sub_win = subWin.SubWindow("delete", self.tree, self)
+        subWin.SubWindow("delete", self)
 
     def open_tree(self):
-        sub_win = subWin.SubWindow("open", self.tree, self)
+        subWin.SubWindow("open", self)
         
     def save_tree(self):
-        sub_win = subWin.SubWindow("save", self.tree, self)
+        subWin.SubWindow("save", self)
     
     def encode(self):
-        sub_win = subWin.SubWindow("encode", self.tree, self)
+        subWin.SubWindow("encode", self)
 
     def decode(self):
-        sub_win = subWin.SubWindow("decode", self.tree, self)
+        subWin.SubWindow("decode", self)
+
+    def modify_node(self):
+        subWin.SubWindow("modify", self)
     
     def delete_all_tree(self):
         self.tree.delete_all()

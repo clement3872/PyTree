@@ -72,7 +72,7 @@ class GiveCodeWindow():
 
 class SubWindow(object):
     
-    def __init__(self, action,tree, main_window):
+    def __init__(self, action, main_window):
         self.main_window = main_window
 
         self.window = tk.Tk()
