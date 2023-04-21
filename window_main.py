@@ -20,10 +20,14 @@ class MainWindow(object):
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("PyTree GUI")
+        # self.window.geometry("1350x830")
 
         # Frame
         self.frame1 = tk.Frame(self.window) # for buttons/labels
-        self.frame2 = tk.Frame(self.window) # for the canvas
+        self.frame2 = tk.Frame(self.window, height=800, width=1200) # for the canvas
+        
+        # The main Canvas
+        self.canvas = tk.Canvas(self.frame2, height=800, width=1200)
 
         self.l_pointers = []
         self.tree = binTree.BinaryTree()
@@ -42,12 +46,16 @@ class MainWindow(object):
         b_encode = tk.Button(self.frame1, text="Encode message", command=self.encode)
         b_decode = tk.Button(self.frame1, text="Decode message", command=self.decode)
 
-
-        self.canvas = tk.Canvas(self.frame2)
+        # Sroll bars
+        self.scroll_bar1 = tk.Scrollbar(self.frame2, orient="horizontal", command=self.canvas.xview)
+        self.scroll_bar2 = tk.Scrollbar(self.frame2, orient="vertical", command=self.canvas.yview)
+        self.canvas.config(xscrollcommand=self.scroll_bar1.set, yscrollcommand=self.scroll_bar2.set)
 
         # buttons etc on the window
-        self.frame1.grid(row=0, column=0)
-        self.frame2.grid(row=0, column=1)
+        # self.frame1.grid(row=0, column=0)
+        # self.frame2.grid(row=0, column=1)
+        self.frame1.pack(side="left")
+        self.frame2.pack(side="right", expand=True)
         t_title1.pack(pady=5,padx=10)
         b_add_node.pack()
         b_remove_node.pack()
@@ -62,7 +70,10 @@ class MainWindow(object):
         b_save_tree.pack()
         Spacer(self.frame1)
 
-        self.canvas.pack()
+        self.scroll_bar2.pack(side="right", fill='y')
+        self.scroll_bar1.pack(side="bottom", fill='x')
+        self.canvas.pack(expand=True, side="left")
+
 
         for i in range(25):
             break
@@ -108,10 +119,9 @@ class MainWindow(object):
         line_width = 1
 
         canvas_size = ((2**(total_height)) * circle_radius*2, total_height*circle_radius*2 + 2)
-        self.canvas.configure(width=canvas_size[0], height=canvas_size[1])
-        # self.canvas.configure(height=1000, width=1900)
-        # canvas_size = (1000,1900)
-
+        # because of the scrollbars we don't adjust the size of the canvas, for some reasons...
+        # self.canvas.configure(width=canvas_size[0], height=canvas_size[1])
+        
         def walk_tree_rec(node, current_height, old_rel_x, rel_x, canvas, canvas_size, circle_radius):
             """
             at the first iteration we need:
@@ -156,6 +166,8 @@ class MainWindow(object):
                       canvas=self.canvas,
                       canvas_size=canvas_size,
                       circle_radius=circle_radius)
+
+        self.canvas.config(scrollregion=self.canvas.bbox("all"))
     
 
 
