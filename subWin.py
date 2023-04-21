@@ -28,7 +28,7 @@ class GiveCodeWindow():
     def __init__(self, message="", key=""):
         self.message = str(message)
         self.key = str(key)
-        
+
         window = tk.Tk()
         window.geometry("250x140")
 
@@ -72,7 +72,7 @@ class GiveCodeWindow():
 
 class SubWindow(object):
     
-    def __init__(self, action,tree, main_window):
+    def __init__(self, action, main_window):
         self.main_window = main_window
 
         self.window = tk.Tk()
@@ -100,6 +100,8 @@ class SubWindow(object):
             self.set_encode_interface()
         elif action == "decode":
             self.set_decode_interface()
+        elif action == "modify":
+            self.set_modify_interface()
         
 
         self.label.pack()
@@ -146,6 +148,13 @@ class SubWindow(object):
         self.b_apply.config(text="Decode", command=self.decode_tree)
         self.window.geometry("250x130")
 
+    def set_modify_interface(self):
+        self.window.title("Modify node value:")
+        self.label.config(text="Current node value:")
+        self.label2.config(text="New value:")
+        self.b_apply.config(text="Apply", command=self.modify)
+        self.window.geometry("250x130")
+    
     def add_node(self):
         if type(self.main_window.tree) == type(Huffman.HuffmanTree()):
             root = self.main_window.tree.root
@@ -169,9 +178,6 @@ class SubWindow(object):
             self.main_window.draw_tree(self.main_window.tree)
 
             GiveCodeWindow(message, key)
-
-
-    
     def decode_tree(self):
         message = self.entry.get()
         key = self.entry2.get()
@@ -233,3 +239,10 @@ class SubWindow(object):
             self.window.destroy()
         else:
             ErrorWindow("Insert a node into the tree first...")
+    
+    def modify(self):
+        current = self.entry.get()
+        new_value = self.entry2.get()
+        
+        self.main_window.tree(current, new_value)
+        self.main_window.draw_tree(self.main_window.tree)

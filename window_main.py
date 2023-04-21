@@ -20,10 +20,14 @@ class MainWindow(object):
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("PyTree GUI")
+        # self.window.geometry("1350x830")
 
         # Frame
         self.frame1 = tk.Frame(self.window) # for buttons/labels
-        self.frame2 = tk.Frame(self.window) # for the canvas
+        self.frame2 = tk.Frame(self.window, height=800, width=1200) # for the canvas
+        
+        # The main Canvas
+        self.canvas = tk.Canvas(self.frame2, height=800, width=1200)
 
         self.l_pointers = []
         self.tree = binTree.BinaryTree()
@@ -34,35 +38,46 @@ class MainWindow(object):
         t_title3 = tk.Label(self.frame1, text="Other functionalities")
 
         # Buttons
-        b_add_node = tk.Button(self.frame1, text="Add node", command=self.add_node)
-        b_remove_node = tk.Button(self.frame1, text="Remove node", command=self.remove_node)
-        b_open_tree = tk.Button(self.frame1, text="Open tree", command=self.open_tree)
-        b_save_tree = tk.Button(self.frame1, text="Save tree", command=self.save_tree)
+        b_add_node = tk.Button(self.frame1, text="Add a node", command=self.add_node)
+        b_remove_node = tk.Button(self.frame1, text="Remove a node", command=self.remove_node)
+        b_open_tree = tk.Button(self.frame1, text="Open a file", command=self.open_tree)
+        b_save_tree = tk.Button(self.frame1, text="Save as a file", command=self.save_tree)
         b_delete_all = tk.Button(self.frame1, text="Delete all nodes", command=self.delete_all_tree)
         b_encode = tk.Button(self.frame1, text="Encode message", command=self.encode)
         b_decode = tk.Button(self.frame1, text="Decode message", command=self.decode)
+        b_modify = tk.Button(self.frame1, text="Modify a node", command=self.modify_node)
 
-
-        self.canvas = tk.Canvas(self.frame2)
+        # Sroll bars
+        self.scroll_bar1 = tk.Scrollbar(self.frame2, orient="horizontal", command=self.canvas.xview)
+        self.scroll_bar2 = tk.Scrollbar(self.frame2, orient="vertical", command=self.canvas.yview)
+        self.canvas.config(xscrollcommand=self.scroll_bar1.set, yscrollcommand=self.scroll_bar2.set)
 
         # buttons etc on the window
         self.frame1.grid(row=0, column=0)
         self.frame2.grid(row=0, column=1)
+
         t_title1.pack(pady=5,padx=10)
         b_add_node.pack()
         b_remove_node.pack()
+        b_modify.pack()
+        b_delete_all.pack()
         Spacer(self.frame1)
+
         t_title2.pack(pady=5,padx=10)
         b_encode.pack()
         b_decode.pack()
         Spacer(self.frame1)
+        
         t_title3.pack(pady=5,padx=10)
         b_delete_all.pack()
         b_open_tree.pack()
         b_save_tree.pack()
         Spacer(self.frame1)
 
-        self.canvas.pack()
+        self.scroll_bar2.pack(side="right", fill='y')
+        self.scroll_bar1.pack(side="bottom", fill='x')
+        self.canvas.pack(expand=True, side="left")
+
 
         for i in range(25):
             break
@@ -77,22 +92,25 @@ class MainWindow(object):
         self.window.mainloop()
 
     def add_node(self):
-        sub_win = subWin.SubWindow("add", self.tree, self)
+        subWin.SubWindow("add", self)
     
     def remove_node(self):
-        sub_win = subWin.SubWindow("delete", self.tree, self)
+        subWin.SubWindow("delete", self)
 
     def open_tree(self):
-        sub_win = subWin.SubWindow("open", self.tree, self)
+        subWin.SubWindow("open", self)
         
     def save_tree(self):
-        sub_win = subWin.SubWindow("save", self.tree, self)
+        subWin.SubWindow("save", self)
     
     def encode(self):
-        sub_win = subWin.SubWindow("encode", self.tree, self)
+        subWin.SubWindow("encode", self)
 
     def decode(self):
-        sub_win = subWin.SubWindow("decode", self.tree, self)
+        subWin.SubWindow("decode", self)
+
+    def modify_node(self):
+        subWin.SubWindow("modify", self)
     
     def delete_all_tree(self):
         self.tree.delete_all()
@@ -108,10 +126,9 @@ class MainWindow(object):
         line_width = 1
 
         canvas_size = ((2**(total_height)) * circle_radius*2, total_height*circle_radius*2 + 2)
-        self.canvas.configure(width=canvas_size[0], height=canvas_size[1])
-        # self.canvas.configure(height=1000, width=1900)
-        # canvas_size = (1000,1900)
-
+        # because of the scrollbars we don't adjust the size of the canvas, for some reasons...
+        # self.canvas.configure(width=canvas_size[0], height=canvas_size[1])
+        
         def walk_tree_rec(node, current_height, old_rel_x, rel_x, canvas, canvas_size, circle_radius):
             """
             at the first iteration we need:
@@ -156,6 +173,8 @@ class MainWindow(object):
                       canvas=self.canvas,
                       canvas_size=canvas_size,
                       circle_radius=circle_radius)
+
+        self.canvas.config(scrollregion=self.canvas.bbox("all"))
     
 
 
