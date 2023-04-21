@@ -60,7 +60,6 @@ class MainWindow(object):
         b_add_node.pack()
         b_remove_node.pack()
         b_modify.pack()
-        b_delete_all.pack()
         Spacer(self.frame1)
 
         t_title2.pack(pady=5,padx=10)
@@ -72,6 +71,7 @@ class MainWindow(object):
         b_delete_all.pack()
         b_open_tree.pack()
         b_save_tree.pack()
+        b_delete_all.pack()
         Spacer(self.frame1)
 
         self.scroll_bar2.pack(side="right", fill='y')
@@ -144,12 +144,12 @@ class MainWindow(object):
                 denominator = 2**(current_height+1)
                 
                 x = int(rel_x/denominator * canvas_size[0]) 
-                y = current_height * circle_radius * 2 + circle_radius + 2 
+                y = current_height * circle_radius * 3 + circle_radius + 2 
 
 
                 if current_height > 0:
                     canvas.create_line(int(old_rel_x/(2**(current_height)) * canvas_size[0]), 
-                                        (current_height-1) * circle_radius * 2+ 2*circle_radius, 
+                                        (current_height-1) * circle_radius * 3 + circle_radius, 
                                         x,
                                         y-circle_radius,
                                         width=line_width)
@@ -175,21 +175,8 @@ class MainWindow(object):
                       circle_radius=circle_radius)
 
         self.canvas.config(scrollregion=self.canvas.bbox("all"))
-    
-
-
-# tree = binTree.BinaryTree()
-# for i in range(10): tree.insert(str(i))
-
-# sw = subWin.SubWindow("delete", tree)
-# tree.display()
 
 
 
 win = MainWindow()
-
-# win.tree = Huffman.HuffmanTree()
-# win.tree.encode("test")
-
-# win.draw_tree(win.tree)
 win.display()
