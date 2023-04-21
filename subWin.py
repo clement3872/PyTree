@@ -1,6 +1,6 @@
 import tkinter as tk
 import os, pyperclip
-import binTree, Huffman
+import binTree, Huffman, platform
 
 
 class Spacer(tk.Label):
@@ -68,16 +68,16 @@ class GiveCodeWindow():
         window.mainloop()
     
     def copy_message(self):
-        try:
+        if platform.system() != "Linux":
             pyperclip.copy(str(self.message))
-        except:
+        else:
             pyperclip.set_clipboard("klipper")
             pyperclip.copy(str(self.message))
     
     def copy_key(self):
-        try:
+        if platform.system() != "Linux":
             pyperclip.copy(str(self.key))
-        except:
+        else:
             pyperclip.set_clipboard("klipper")
             pyperclip.copy(str(self.key))
     

@@ -81,12 +81,6 @@ class MainWindow(object):
         self.scroll_bar1.pack(side="bottom", fill='x')
         self.canvas.pack(expand=True, side="left")
 
-
-        for i in range(25):
-            break
-            self.tree.insert(str(i))
-        
-        # self.tree.delete(4)
         
         self.draw_tree(self.tree) 
     
