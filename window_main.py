@@ -46,6 +46,7 @@ class MainWindow(object):
         b_encode = tk.Button(self.frame1, text="Encode message", command=self.encode)
         b_decode = tk.Button(self.frame1, text="Decode message", command=self.decode)
         b_modify = tk.Button(self.frame1, text="Modify a node", command=self.modify_node)
+        b_decompose = tk.Button(self.frame1, text="Decompose tree", command=self.decompose_tree)
 
         # Sroll bars
         self.scroll_bar1 = tk.Scrollbar(self.frame2, orient="horizontal", command=self.canvas.xview)
@@ -70,6 +71,8 @@ class MainWindow(object):
         t_title3.pack(pady=5,padx=10)
         b_delete_all.pack()
         b_open_tree.pack()
+        b_decompose.pack()
+        Spacer(self.frame1)
         b_save_tree.pack()
         b_delete_all.pack()
         Spacer(self.frame1)
@@ -111,6 +114,10 @@ class MainWindow(object):
 
     def modify_node(self):
         subWin.SubWindow("modify", self)
+    
+    def decompose_tree(self):
+        subWin.decomposition(self.tree)
+        
     
     def delete_all_tree(self):
         self.tree.delete_all()

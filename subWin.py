@@ -8,7 +8,6 @@ class Spacer(tk.Label):
         super().__init__(frame, text=" ")
         self.pack()
 
-
 class ErrorWindow(object):
     def __init__(self, message=""):
         self.window = tk.Tk()
@@ -23,6 +22,20 @@ class ErrorWindow(object):
 
         self.window.mainloop()
 
+def decomposition(tree):
+    l_nodes = tree.decomposition(tree.root)
+    if len(l_nodes) > 0:
+        tmp_win = tk.Tk()
+        tmp_win.title("Decomposition")
+        string = ""
+        for node in l_nodes:
+            string += f"{str(node.value)}{str(node)}\n"
+        tk.Label(tmp_win, text=string).pack(padx=10,pady=10)
+        
+        tmp_win.mainloop()
+    else:
+        ErrorWindow("Tree is empty")
+
 
 class GiveCodeWindow():
     def __init__(self, message="", key=""):
@@ -30,6 +43,7 @@ class GiveCodeWindow():
         self.key = str(key)
 
         window = tk.Tk()
+        window.title("Message box")
         window.geometry("250x140")
 
 
@@ -106,11 +120,11 @@ class SubWindow(object):
 
         self.label.pack()
         self.entry.pack()
-        if action == "decode":
+        if action in ["decode", "modify"]:
             self.label2.pack()
             self.entry2.pack()
         self.b_apply.pack()
-
+        
         self.window.mainloop()
 
 
@@ -154,6 +168,7 @@ class SubWindow(object):
         self.label2.config(text="New value:")
         self.b_apply.config(text="Apply", command=self.modify)
         self.window.geometry("250x130")
+
     
     def add_node(self):
         if type(self.main_window.tree) == type(Huffman.HuffmanTree()):
@@ -241,8 +256,8 @@ class SubWindow(object):
             ErrorWindow("Insert a node into the tree first...")
     
     def modify(self):
-        current = self.entry.get()
+        current_value = self.entry.get()
         new_value = self.entry2.get()
         
-        self.main_window.tree(current, new_value)
+        self.main_window.tree.change_value(current_value, new_value)
         self.main_window.draw_tree(self.main_window.tree)
