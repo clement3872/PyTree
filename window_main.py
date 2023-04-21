@@ -10,7 +10,6 @@ class Pointer(object):
 
 
 class Spacer(tk.Label):
-    # Add some space in frame
     def __init__(self, frame):
         super().__init__(frame, text=" ")
         self.pack()
@@ -19,20 +18,16 @@ class Spacer(tk.Label):
 class MainWindow(object):
 
     def __init__(self):
-        # Create a Tkinter window
         self.window = tk.Tk()
         self.window.title("PyTree GUI")
-        self.window.resizable(0,0)
-        
-        # x,y size of the canvas for the tree (not the total window's size)
-        cwidth, c_height = 1200, 800
+        # self.window.geometry("1350x830")
 
         # Frame
         self.frame1 = tk.Frame(self.window) # for buttons/labels
-        self.frame2 = tk.Frame(self.window, height=c_height, width=cwidth) # for the canvas
+        self.frame2 = tk.Frame(self.window, height=800, width=1200) # for the canvas
         
         # The main Canvas
-        self.canvas = tk.Canvas(self.frame2, height=c_height, width=cwidth)
+        self.canvas = tk.Canvas(self.frame2, height=800, width=1200)
 
         self.l_pointers = []
         self.tree = binTree.BinaryTree()
@@ -43,15 +38,13 @@ class MainWindow(object):
         t_title3 = tk.Label(self.frame1, text="Other functionalities")
 
         # Buttons
-        b_add_node = tk.Button(self.frame1, text="Add a node", command=self.add_node)
-        b_remove_node = tk.Button(self.frame1, text="Remove a node", command=self.remove_node)
-        b_open_tree = tk.Button(self.frame1, text="Open a file", command=self.open_tree)
-        b_save_tree = tk.Button(self.frame1, text="Save as a file", command=self.save_tree)
+        b_add_node = tk.Button(self.frame1, text="Add node", command=self.add_node)
+        b_remove_node = tk.Button(self.frame1, text="Remove node", command=self.remove_node)
+        b_open_tree = tk.Button(self.frame1, text="Open tree", command=self.open_tree)
+        b_save_tree = tk.Button(self.frame1, text="Save tree", command=self.save_tree)
         b_delete_all = tk.Button(self.frame1, text="Delete all nodes", command=self.delete_all_tree)
         b_encode = tk.Button(self.frame1, text="Encode message", command=self.encode)
         b_decode = tk.Button(self.frame1, text="Decode message", command=self.decode)
-        b_modify = tk.Button(self.frame1, text="Modify a node", command=self.modify_node)
-        b_decompose = tk.Button(self.frame1, text="Decompose tree", command=self.decompose_tree)
 
         # Sroll bars
         self.scroll_bar1 = tk.Scrollbar(self.frame2, orient="horizontal", command=self.canvas.xview)
@@ -59,64 +52,58 @@ class MainWindow(object):
         self.canvas.config(xscrollcommand=self.scroll_bar1.set, yscrollcommand=self.scroll_bar2.set)
 
         # buttons etc on the window
-        self.frame1.grid(row=0, column=0)
-        self.frame2.grid(row=0, column=1)
-
+        # self.frame1.grid(row=0, column=0)
+        # self.frame2.grid(row=0, column=1)
+        self.frame1.pack(side="left")
+        self.frame2.pack(side="right", expand=True)
         t_title1.pack(pady=5,padx=10)
         b_add_node.pack()
         b_remove_node.pack()
-        b_modify.pack()
         Spacer(self.frame1)
-
         t_title2.pack(pady=5,padx=10)
         b_encode.pack()
         b_decode.pack()
         Spacer(self.frame1)
-        
         t_title3.pack(pady=5,padx=10)
         b_delete_all.pack()
-        b_decompose.pack()
-        Spacer(self.frame1)
+        b_open_tree.pack()
         b_save_tree.pack()
-        b_open_tree.pack() 
         Spacer(self.frame1)
 
         self.scroll_bar2.pack(side="right", fill='y')
         self.scroll_bar1.pack(side="bottom", fill='x')
         self.canvas.pack(expand=True, side="left")
 
+
+        for i in range(25):
+            break
+            self.tree.insert(str(i))
+        
+        # self.tree.delete(4)
         
         self.draw_tree(self.tree) 
     
     
     def display(self):
-        
         self.window.mainloop()
 
     def add_node(self):
-        subWin.SubWindow("add", self)
+        sub_win = subWin.SubWindow("add", self.tree, self)
     
     def remove_node(self):
-        subWin.SubWindow("delete", self)
+        sub_win = subWin.SubWindow("delete", self.tree, self)
 
     def open_tree(self):
-        subWin.SubWindow("open", self)
+        sub_win = subWin.SubWindow("open", self.tree, self)
         
     def save_tree(self):
-        subWin.SubWindow("save", self)
+        sub_win = subWin.SubWindow("save", self.tree, self)
     
     def encode(self):
-        subWin.SubWindow("encode", self)
+        sub_win = subWin.SubWindow("encode", self.tree, self)
 
     def decode(self):
-        subWin.SubWindow("decode", self)
-
-    def modify_node(self):
-        subWin.SubWindow("modify", self)
-    
-    def decompose_tree(self):
-        subWin.decomposition(self.tree)
-        
+        sub_win = subWin.SubWindow("decode", self.tree, self)
     
     def delete_all_tree(self):
         self.tree.delete_all()
@@ -150,12 +137,12 @@ class MainWindow(object):
                 denominator = 2**(current_height+1)
                 
                 x = int(rel_x/denominator * canvas_size[0]) 
-                y = current_height * circle_radius * 3 + circle_radius + 2 
+                y = current_height * circle_radius * 2 + circle_radius + 2 
 
 
                 if current_height > 0:
                     canvas.create_line(int(old_rel_x/(2**(current_height)) * canvas_size[0]), 
-                                        (current_height-1) * circle_radius * 3 + circle_radius, 
+                                        (current_height-1) * circle_radius * 2+ 2*circle_radius, 
                                         x,
                                         y-circle_radius,
                                         width=line_width)
@@ -181,8 +168,21 @@ class MainWindow(object):
                       circle_radius=circle_radius)
 
         self.canvas.config(scrollregion=self.canvas.bbox("all"))
+    
+
+
+# tree = binTree.BinaryTree()
+# for i in range(10): tree.insert(str(i))
+
+# sw = subWin.SubWindow("delete", tree)
+# tree.display()
 
 
 
 win = MainWindow()
+
+# win.tree = Huffman.HuffmanTree()
+# win.tree.encode("test")
+
+# win.draw_tree(win.tree)
 win.display()
