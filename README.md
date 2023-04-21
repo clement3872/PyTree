@@ -6,9 +6,15 @@ It's a little project from the University, here is what it contains:
  - window_main.py & subWin.py: basic GUI for binary tree (needs binTree and Huffman.py in the same folder)
 
 # Requirements
-Having Python installed, with tkinter and numpy modules.
-(numpy is used for log2 and tkinter for GUI)
-tkinter should be installed by default (exept on linux), to install numpy: pip install numpy
+
+Having Python installed, with "tkinter", "numpy" and "pyperclip" modules.
+Tkinter should be installed by default (exept on linux)
+To install "numpy": pip install numpy
+To install "pyperclip": pip install pyperclip
+Or run install_mudules.sh (works on Linux)
+
+If you are on Linux, you may need to install "klipper", you will need to see on internet this...
+
 
 # More details
 

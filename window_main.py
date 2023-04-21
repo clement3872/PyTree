@@ -10,6 +10,7 @@ class Pointer(object):
 
 
 class Spacer(tk.Label):
+    # Add some space in frame
     def __init__(self, frame):
         super().__init__(frame, text=" ")
         self.pack()
@@ -18,16 +19,20 @@ class Spacer(tk.Label):
 class MainWindow(object):
 
     def __init__(self):
+        # Create a Tkinter window
         self.window = tk.Tk()
         self.window.title("PyTree GUI")
-        # self.window.geometry("1350x830")
+        self.window.resizable(0,0)
+        
+        # x,y size of the canvas for the tree (not the total window's size)
+        cwidth, c_height = 1200, 800
 
         # Frame
         self.frame1 = tk.Frame(self.window) # for buttons/labels
-        self.frame2 = tk.Frame(self.window, height=800, width=1200) # for the canvas
+        self.frame2 = tk.Frame(self.window, height=c_height, width=cwidth) # for the canvas
         
         # The main Canvas
-        self.canvas = tk.Canvas(self.frame2, height=800, width=1200)
+        self.canvas = tk.Canvas(self.frame2, height=c_height, width=cwidth)
 
         self.l_pointers = []
         self.tree = binTree.BinaryTree()
@@ -70,11 +75,10 @@ class MainWindow(object):
         
         t_title3.pack(pady=5,padx=10)
         b_delete_all.pack()
-        b_open_tree.pack()
         b_decompose.pack()
         Spacer(self.frame1)
         b_save_tree.pack()
-        b_delete_all.pack()
+        b_open_tree.pack() 
         Spacer(self.frame1)
 
         self.scroll_bar2.pack(side="right", fill='y')
@@ -86,6 +90,7 @@ class MainWindow(object):
     
     
     def display(self):
+        
         self.window.mainloop()
 
     def add_node(self):

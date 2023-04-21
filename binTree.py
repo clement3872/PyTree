@@ -24,7 +24,6 @@ class BinaryTree(object):
         return len(self.width_first(self, self.root))
     
     def get_height(self):
-        
         def height_rec(node):
             if node == None: return 0
             else:
@@ -124,9 +123,9 @@ class BinaryTree(object):
         # Cette fonction est récursive
         l = []
         if node is None: return l
-        l.append(node)
         l.extend(self.depth_first(node.left))
         l.extend(self.depth_first(node.right))
+        l.append(node)
 
         return l
     
@@ -189,10 +188,6 @@ class BinaryTree(object):
 
     def decomposition(self, node) -> None:
         return self.depth_first(node)
-
-    def to_string(self) -> str:
-        pass
-
 
 
 def merge_trees(tree1, tree2) -> BinaryTree:
