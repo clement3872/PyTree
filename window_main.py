@@ -4,21 +4,45 @@ import binTree, subWin, Huffman
 
 
 class Pointer(object):
-    # Used as a pointer - to avoid global variables
     def __init__(self):
         self.value = None
 
 
 class Spacer(tk.Label):
-    # Add some space in frame
+    """clas used to create space in a frame.
+    """
     def __init__(self, frame):
         super().__init__(frame, text=" ")
         self.pack()
 
 
 class MainWindow(object):
+    """
+    A class representing the main window of the PyTree GUI application.
+
+    Args:
+    -----------
+    window : tkinter.Tk
+        The main window of the application.
+    frame1 : tkinter.Frame
+        The frame containing the buttons and labels in the main window.
+    frame2 : tkinter.Frame
+        The frame containing the canvas for the binary tree in the main window.
+    canvas : tkinter.Canvas
+        The canvas used to draw the binary tree.
+    l_pointers : list
+        A list of pointers to the nodes in the binary tree.
+    tree : binTree.BinaryTree
+        The binary tree used in the application.
+    scroll_bar1 : tkinter.Scrollbar
+        The horizontal scrollbar for the canvas.
+    scroll_bar2 : tkinter.Scrollbar
+        The vertical scrollbar for the canvas.
+    """
 
     def __init__(self):
+        """ Initiazes a new MainWindow
+        """
         # Create a Tkinter window
         self.window = tk.Tk()
         self.window.title("PyTree GUI")
@@ -90,41 +114,60 @@ class MainWindow(object):
     
     
     def display(self):
-        
+        """Runs the tkinter window.
+        """
         self.window.mainloop()
 
     def add_node(self):
+        """Open an interface to add a node in the tree based on the user's entry"""
         subWin.SubWindow("add", self)
     
     def remove_node(self):
+        """Open an interface to add a remove in the tree based on the user's entry"""
         subWin.SubWindow("delete", self)
 
     def open_tree(self):
+        """Open an interface to load a tree from a file."""
         subWin.SubWindow("open", self)
         
     def save_tree(self):
+        """Open an interface to save the current tree in a file
+        """
         subWin.SubWindow("save", self)
     
     def encode(self):
+        """Open an interface to add a encode a message using a Huffmancode based on the user's entry
+        """
         subWin.SubWindow("encode", self)
 
     def decode(self):
+        """Open an interface to decode a message coded using a Huffman code in the tree based on the user's entry
+        """
         subWin.SubWindow("decode", self)
 
     def modify_node(self):
+        """Open an interface to modify a node in the tree based on the user's entry.
+        """
         subWin.SubWindow("modify", self)
     
     def decompose_tree(self):
+        """Open an interface to show the decomposition of a Huffman the tree
+        """
         subWin.decomposition(self.tree)
         
     
     def delete_all_tree(self):
+        """Erase the current tree"""
         self.tree.delete_all()
         self.draw_tree(self.tree)
 
 
     def draw_tree(self, tree):
+        """Draw a tree on the canvas
 
+        Args:
+            tree (BinTree): Binary tree to draw
+        """
         self.canvas.delete("all") # delete everything on the canvas
         if tree.root == None: return
         circle_radius = 20
@@ -136,11 +179,16 @@ class MainWindow(object):
         # self.canvas.configure(width=canvas_size[0], height=canvas_size[1])
         
         def walk_tree_rec(node, current_height, old_rel_x, rel_x, canvas, canvas_size, circle_radius):
-            """
-            at the first iteration we need:
-            current_height=0
-            rel_x=1
-            old_rel_x = 0 # or whatever
+            """Recursive walk in the tree
+
+            Args:
+                node (Node): Root of the binarytree
+                current_height (int): Height of the current binary tree
+                old_rel_x (int): X coordinate of the parent node
+                rel_x (int): X coordinate of the current node
+                canvas (Canvas): Canvas to draw the binarytree
+                canvas_size (tuple): Canvas size (width, height)
+                circle_radius (int): radius of the circle used to draw a node
             """
             if node == None: return
             else:

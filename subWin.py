@@ -9,6 +9,9 @@ class Spacer(tk.Label):
         self.pack()
 
 class ErrorWindow(object):
+    """Class to create a popup window
+
+    """
     def __init__(self, message=""):
         self.window = tk.Tk()
         self.window.geometry("300x120")
@@ -23,6 +26,11 @@ class ErrorWindow(object):
         self.window.mainloop()
 
 def decomposition(tree):
+    """Display the decomposition of the current tree in a new window
+
+    Args:
+        tree (BinaryTree): The targeted tree
+    """
     l_nodes = tree.decomposition(tree.root)
     if len(l_nodes) > 0:
         tmp_win = tk.Tk()
@@ -38,7 +46,15 @@ def decomposition(tree):
 
 
 class GiveCodeWindow():
+    """Create a new window to display a message
+    """
     def __init__(self, message="", key=""):
+        """Constructor of GiveCodeWindow class.
+
+        Args:
+            message (str): The message to show. Defaults to "".
+            key (str): The key to show. Defaults to "".
+        """
         self.message = str(message)
         self.key = str(key)
 
@@ -68,6 +84,8 @@ class GiveCodeWindow():
         window.mainloop()
     
     def copy_message(self):
+        """Copies the message to the clipboard
+        """
         if platform.system() != "Linux":
             pyperclip.copy(str(self.message))
         else:
@@ -75,6 +93,8 @@ class GiveCodeWindow():
             pyperclip.copy(str(self.message))
     
     def copy_key(self):
+        """Copies the key to the clipboard
+        """
         if platform.system() != "Linux":
             pyperclip.copy(str(self.key))
         else:
@@ -85,8 +105,14 @@ class GiveCodeWindow():
 
 
 class SubWindow(object):
-    
+    """Class to create subwindow"""
     def __init__(self, action, main_window):
+        """Constructor of the SubWindow class
+
+        Args:
+            action (str): ('add', 'delete', 'open', 'save', 'encode', 'decode, 'modify')
+            main_window (MainWindow): The main window
+        """
         self.main_window = main_window
 
         self.window = tk.Tk()
@@ -129,33 +155,44 @@ class SubWindow(object):
 
 
     def set_add_interface(self):
+        """Set the interface to add a node"""
         self.window.title("Adding a node")
         self.label.config(text="Value to insert:")
         self.b_apply.config(text="Add node", command=self.add_node)
 
     
     def set_delete_interface(self):
+        """Set the interface to remove a node
+        """
         self.window.title("Removing a node")
         self.label.config(text="Value to delete:")
         self.b_apply.config(text="delete node", command=self.delete_node)
 
 
     def set_open_interface(self):
+        """Set the interface to load a tree from a file
+        """
         self.window.title("Open a file")
         self.label.config(text="Path to the file (default is save.txt):")
         self.b_apply.config(text="Open saved tree", command=self.open_tree)
 
     def set_save_interface(self):
+        """Set the interface to save the current tree in a txt file
+        """
         self.window.title("Save to a file")
         self.label.config(text="Path to the file (default is save.txt):")
         self.b_apply.config(text="Save tree", command=self.save_tree)
 
     def set_encode_interface(self):
+        """Set the interface to encode a message based on the user's entry
+        """
         self.window.title("Encode a message")
         self.label.config(text="Message to encode:")
         self.b_apply.config(text="Encode", command=self.encode_tree)
 
     def set_decode_interface(self):
+        """Set the interface to decode a message given by the user
+        """
         self.window.title("Decode a message")
         self.label.config(text="Message to decode:")
         self.label2.config(text="key:")
@@ -163,6 +200,8 @@ class SubWindow(object):
         self.window.geometry("250x130")
 
     def set_modify_interface(self):
+        """Set the interface to modify a node in the current tree.
+        """
         self.window.title("Modify node value:")
         self.label.config(text="Current node value:")
         self.label2.config(text="New value:")
@@ -171,6 +210,7 @@ class SubWindow(object):
 
     
     def add_node(self):
+        """Add a node to the current tree"""
         if type(self.main_window.tree) == type(Huffman.HuffmanTree()):
             root = self.main_window.tree.root
             self.main_window.tree = binTree.BinaryTree()
@@ -179,11 +219,15 @@ class SubWindow(object):
         self.main_window.draw_tree(self.main_window.tree)
 
     def delete_node(self):
+        """Remove a node to the current tree
+        """
         if not self.main_window.tree.delete(self.entry.get()):
             ErrorWindow("Node does not exist")
         self.main_window.draw_tree(self.main_window.tree)
 
     def encode_tree(self):
+        """Encode a message givent by the user
+        """
         message = self.entry.get()
         if message.strip() != "":
             self.main_window.tree.delete_all()
@@ -194,6 +238,11 @@ class SubWindow(object):
 
             GiveCodeWindow(message, key)
     def decode_tree(self):
+        """Decode a message givent by the user
+
+        Returns:
+            string: Decoded message
+        """
         message = self.entry.get()
         key = self.entry2.get()
         
@@ -212,6 +261,8 @@ class SubWindow(object):
         return message
 
     def open_tree(self):
+        """Load a tree from a txt file. Defaults saved file is "save.txt".
+        """
         path = self.entry.get()
         if path == "": path = "save.txt"
         if os.path.exists(path):
@@ -239,6 +290,8 @@ class SubWindow(object):
         
     
     def save_tree(self):
+        """Save the current tree in a txt file.
+        """
         if self.main_window.tree.root != None:
             path = self.entry.get()
             if path == "": path = "save.txt"
@@ -256,6 +309,7 @@ class SubWindow(object):
             ErrorWindow("Insert a node into the tree first...")
     
     def modify(self):
+        """Modify a node in the current tree"""
         current_value = self.entry.get()
         new_value = self.entry2.get()
         
