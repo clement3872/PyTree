@@ -71,14 +71,14 @@ class GiveCodeWindow():
         if platform.system() != "Linux":
             pyperclip.copy(str(self.message))
         else:
-            pyperclip.set_clipboard("klipper")
+            pyperclip.set_clipboard("xclip")
             pyperclip.copy(str(self.message))
     
     def copy_key(self):
         if platform.system() != "Linux":
             pyperclip.copy(str(self.key))
         else:
-            pyperclip.set_clipboard("klipper")
+            pyperclip.set_clipboard("xclip")
             pyperclip.copy(str(self.key))
     
 
